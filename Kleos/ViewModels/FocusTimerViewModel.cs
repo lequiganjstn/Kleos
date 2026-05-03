@@ -1,5 +1,4 @@
-﻿using Android.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Kleos.Data;
 using Kleos.Models;

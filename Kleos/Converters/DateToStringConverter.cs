@@ -9,8 +9,12 @@ namespace Kleos.Converters
         {
             if (value is DateTime dt)
                 return dt.ToString("MMM dd, yyyy");
-            if (value is DateTime ? nullable && nullable.HasValue)
-                return nullable.Value.ToString("MMM dd, yyyy");
+            if (value is DateTime?)
+            {
+                var nullable = (DateTime?)value;
+                if (nullable.HasValue)
+                    return nullable.Value.ToString("MMM dd, yyyy");
+            }
             return "No due date";
         }
 

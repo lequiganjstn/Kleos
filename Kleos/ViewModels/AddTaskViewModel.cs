@@ -5,7 +5,6 @@ using Kleos.Services;
 using Microsoft.VisualBasic;
 using System;
 using System.Threading.Tasks;
-using static Android.Util.EventLogTags;
 
 namespace Kleos.ViewModels
 {

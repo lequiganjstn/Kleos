@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using IntelliJ.Lang.Annotations;
 
 namespace Kleos.ViewModels
 {

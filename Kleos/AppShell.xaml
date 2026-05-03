@@ -42,10 +42,4 @@
         </Tab>
 
     </TabBar>
-
-    <!--  Modal / Push routes  -->
-    <Shell.Routes>
-        <!--  These are registered in AppShell.xaml.cs  -->
-    </Shell.Routes>
-
 </Shell>
