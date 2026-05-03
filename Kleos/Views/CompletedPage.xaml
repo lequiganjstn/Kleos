@@ -1,12 +1,91 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.CompletedPage"
-             Title="CompletedPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Kleos.Views.CompletedPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Kleos.Converters"
+    xmlns:models="clr-namespace:Kleos.Models"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <converters:PriorityToColorConverter x:Key="PriorityToColor" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  Header  -->
+        <VerticalStackLayout
+            Grid.Row="0"
+            Padding="24,52,24,16"
+            Spacing="2">
+            <Label Style="{StaticResource HeadingLabel}" Text="Completed" />
+            <Label Style="{StaticResource SubheadingLabel}" Text="{Binding CompletedCount, StringFormat='{0} tasks done'}" />
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding CompletedTasks}">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    Padding="0,60"
+                    HorizontalOptions="Center"
+                    Spacing="12"
+                    VerticalOptions="Center">
+                    <Label
+                        HorizontalOptions="Center"
+                        Style="{StaticResource HeadingLabel}"
+                        Text="Nothing completed yet." />
+                    <Label
+                        HorizontalOptions="Center"
+                        Style="{StaticResource SubheadingLabel}"
+                        Text="Finished tasks will appear here." />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.Header>
+                <BoxView HeightRequest="8" Color="Transparent" />
+            </CollectionView.Header>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TodoItem">
+                    <SwipeView Margin="16,0,16,8">
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem
+                                    BackgroundColor="{StaticResource DangerColor}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Delete" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame
+                            Padding="16"
+                            Opacity="0.75"
+                            Style="{StaticResource CardFrame}">
+                            <Grid ColumnDefinitions="6,*" ColumnSpacing="12">
+                                <BoxView
+                                    Grid.Column="0"
+                                    CornerRadius="2"
+                                    VerticalOptions="Fill"
+                                    WidthRequest="4"
+                                    Color="{StaticResource SuccessColor}" />
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label
+                                        FontFamily="RobotoMedium"
+                                        FontSize="15"
+                                        LineBreakMode="TailTruncation"
+                                        Text="{Binding Title}"
+                                        TextColor="{StaticResource TextSecondary}"
+                                        TextDecorations="Strikethrough" />
+                                    <Label Style="{StaticResource CaptionLabel}" Text="{Binding CompletedAt, StringFormat='Completed {0:MMM dd, yyyy}'}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
 </ContentPage>

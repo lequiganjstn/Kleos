@@ -73,5 +73,12 @@ namespace Kleos.ViewModels
         {
             await Shell.Current.GoToAsync("..");
         }
+
+        [RelayCommand]
+        private void SetPriority(string value)
+        {
+            if (int.TryParse(value, out int p))
+                Priority = p;
+        }
     }
 }

@@ -1,9 +1,22 @@
-namespace Kleos.Views;
+using Kleos.ViewModels;
 
-public partial class ProfilePage : ContentPage
+namespace Kleos.Views
 {
-	public ProfilePage()
-	{
-		InitializeComponent();
-	}
+    public partial class ProfilePage : ContentPage
+    {
+        private readonly ProfileViewModel _vm;
+
+        public ProfilePage(ProfileViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _vm.LoadProfileCommand.Execute(null);
+        }
+    }
 }

@@ -1,12 +1,177 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.TodoPage"
-             Title="TodoPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Kleos.Views.TodoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Kleos.Converters"
+    xmlns:models="clr-namespace:Kleos.Models"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <converters:PriorityToColorConverter x:Key="PriorityToColor" />
+        <converters:BoolToStrikethroughConverter x:Key="BoolToStrikethrough" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  Header  -->
+        <Grid
+            Grid.Row="0"
+            Padding="24,52,24,16"
+            BackgroundColor="{StaticResource PrimaryColor}"
+            ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                <Label Style="{StaticResource HeadingLabel}" Text="{Binding Greeting}" />
+                <Label Style="{StaticResource SubheadingLabel}" Text="{Binding PendingCount, StringFormat='{0} tasks pending'}" />
+            </VerticalStackLayout>
+            <ImageButton
+                Grid.Column="1"
+                BackgroundColor="Transparent"
+                Command="{Binding GoToFocusTimerCommand}"
+                HeightRequest="28"
+                Source="icon_timer.png"
+                VerticalOptions="Center"
+                WidthRequest="28" />
+        </Grid>
+
+        <!--  Task List  -->
+        <CollectionView
+            Grid.Row="1"
+            Margin="0,0,0,0"
+            ItemsSource="{Binding Tasks}">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    Padding="0,60"
+                    HorizontalOptions="Center"
+                    Spacing="12"
+                    VerticalOptions="Center">
+                    <Label
+                        HorizontalOptions="Center"
+                        Style="{StaticResource HeadingLabel}"
+                        Text="All clear." />
+                    <Label
+                        HorizontalOptions="Center"
+                        Style="{StaticResource SubheadingLabel}"
+                        Text="Tap + to add your first task." />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.Header>
+                <BoxView HeightRequest="8" Color="Transparent" />
+            </CollectionView.Header>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="100" Color="Transparent" />
+            </CollectionView.Footer>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TodoItem">
+                    <SwipeView Margin="16,0,16,8">
+
+                        <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem
+                                    BackgroundColor="{StaticResource SuccessColor}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CompleteTaskCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Complete" />
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem
+                                    BackgroundColor="{StaticResource CardColor}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToEditTaskCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Edit" />
+                                <SwipeItem
+                                    BackgroundColor="{StaticResource DangerColor}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Delete" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Padding="16" Style="{StaticResource CardFrame}">
+                            <Grid ColumnDefinitions="6,*,Auto" ColumnSpacing="12">
+
+                                <!--  Priority Bar  -->
+                                <BoxView
+                                    Grid.Column="0"
+                                    CornerRadius="2"
+                                    VerticalOptions="Fill"
+                                    WidthRequest="4"
+                                    Color="{Binding Priority, Converter={StaticResource PriorityToColor}}" />
+
+                                <!--  Content  -->
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label
+                                        FontFamily="RobotoMedium"
+                                        LineBreakMode="TailTruncation"
+                                        Style="{StaticResource BodyLabel}"
+                                        Text="{Binding Title}"
+                                        TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethrough}}" />
+                                    <Label
+                                        IsVisible="{Binding Description, Converter={StaticResource StringToBoolConverter}}"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Style="{StaticResource CaptionLabel}"
+                                        Text="{Binding Description}" />
+                                    <HorizontalStackLayout Margin="0,4,0,0" Spacing="8">
+                                        <Label
+                                            IsVisible="{Binding DueDate, Converter={StaticResource NullToBoolConverter}}"
+                                            Style="{StaticResource CaptionLabel}"
+                                            Text="{Binding DueDate, Converter={StaticResource DateToStringConverter}}" />
+                                        <Label
+                                            IsVisible="{Binding Category, Converter={StaticResource StringToBoolConverter}}"
+                                            Style="{StaticResource CaptionLabel}"
+                                            Text="{Binding Category}"
+                                            TextColor="{StaticResource AccentColor}" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <!--  Priority Badge  -->
+                                <Frame
+                                    Grid.Column="2"
+                                    Padding="8,4"
+                                    BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColor}}"
+                                    CornerRadius="8"
+                                    HasShadow="False"
+                                    VerticalOptions="Start">
+                                    <Label
+                                        FontFamily="RobotoMedium"
+                                        FontSize="11"
+                                        Text="{Binding PriorityLabel}"
+                                        TextColor="White" />
+                                </Frame>
+
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  FAB  -->
+        <Button
+            Grid.Row="1"
+            Margin="0,0,24,24"
+            BackgroundColor="{StaticResource AccentColor}"
+            Command="{Binding GoToAddTaskCommand}"
+            CornerRadius="32"
+            FontFamily="RobotoRegular"
+            FontSize="28"
+            HeightRequest="64"
+            HorizontalOptions="End"
+            Text="+"
+            TextColor="White"
+            VerticalOptions="End"
+            WidthRequest="64"
+            ZIndex="10" />
+
+    </Grid>
+
 </ContentPage>

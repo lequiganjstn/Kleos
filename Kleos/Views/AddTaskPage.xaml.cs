@@ -1,9 +1,13 @@
-namespace Kleos.Views;
+using Kleos.ViewModels;
 
-public partial class AddTaskPage : ContentPage
+namespace Kleos.Views
 {
-	public AddTaskPage()
-	{
-		InitializeComponent();
-	}
+    public partial class AddTaskPage : ContentPage
+    {
+        public AddTaskPage(AddTaskViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
+    }
 }

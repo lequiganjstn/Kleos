@@ -1,12 +1,103 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.ProfilePage"
-             Title="ProfilePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Kleos.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,52,24,32" Spacing="20">
+
+            <!--  Header  -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    Grid.Column="0"
+                    Style="{StaticResource HeadingLabel}"
+                    Text="Profile" />
+                <Image
+                    Grid.Column="1"
+                    HeightRequest="24"
+                    Source="icon_settings.png"
+                    VerticalOptions="Center"
+                    WidthRequest="24" />
+            </Grid>
+
+            <!--  Avatar  -->
+            <Frame
+                Padding="0"
+                BackgroundColor="{StaticResource AccentColor}"
+                BorderColor="Transparent"
+                CornerRadius="48"
+                HasShadow="False"
+                HeightRequest="96"
+                HorizontalOptions="Center"
+                WidthRequest="96">
+                <Label
+                    FontFamily="RobotoBold"
+                    FontSize="32"
+                    HorizontalOptions="Center"
+                    Text="{Binding AvatarInitials}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+            </Frame>
+
+            <!--  Name / Email  -->
+            <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label
+                    FontFamily="RobotoMedium"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="{Binding FullName}"
+                    TextColor="{StaticResource TextPrimary}" />
+                <Label
+                    HorizontalOptions="Center"
+                    Style="{StaticResource SubheadingLabel}"
+                    Text="{Binding Email}" />
+            </VerticalStackLayout>
+
+            <!--  Info Card  -->
+            <Frame
+                Margin="0,8,0,0"
+                Padding="20"
+                Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="16">
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource BodyLabel}"
+                            Text="Account" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource SubheadingLabel}"
+                            Text="{Binding Email}" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource DividerColor}" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource BodyLabel}"
+                            Text="App version" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource SubheadingLabel}"
+                            Text="1.0.0" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Logout Button  -->
+            <Button
+                Margin="0,16,0,0"
+                Command="{Binding LogoutCommand}"
+                Style="{StaticResource SecondaryButton}"
+                Text="Sign Out" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

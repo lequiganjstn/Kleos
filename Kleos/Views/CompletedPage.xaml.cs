@@ -1,9 +1,22 @@
-namespace Kleos.Views;
+using Kleos.ViewModels;
 
-public partial class CompletedPage : ContentPage
+namespace Kleos.Views
 {
-	public CompletedPage()
-	{
-		InitializeComponent();
-	}
+    public partial class CompletedPage : ContentPage
+    {
+        private readonly CompletedViewModel _vm;
+
+        public CompletedPage(CompletedViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _vm.LoadCompletedCommand.Execute(null);
+        }
+    }
 }

@@ -1,12 +1,176 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.EditTaskPage"
-             Title="EditTaskPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Kleos.Views.EditTaskPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,52,24,32" Spacing="16">
+
+            <!--  Header  -->
+            <Grid Margin="0,0,0,8" ColumnDefinitions="Auto,*,Auto">
+                <ImageButton
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    Command="{Binding CancelCommand}"
+                    HeightRequest="24"
+                    Source="icon_arrow_left.png"
+                    WidthRequest="24" />
+                <Label
+                    Grid.Column="1"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeadingLabel}"
+                    Text="Edit Task" />
+                <BoxView
+                    Grid.Column="2"
+                    WidthRequest="24"
+                    Color="Transparent" />
+            </Grid>
+
+            <Label
+                Margin="0,8,0,0"
+                Style="{StaticResource SectionHeader}"
+                Text="TITLE" />
+            <Frame Padding="16,14" Style="{StaticResource CardFrame}">
+                <Entry
+                    Placeholder="Task title"
+                    Style="{StaticResource InputEntry}"
+                    Text="{Binding TaskTitle}" />
+            </Frame>
+
+            <Label Style="{StaticResource SectionHeader}" Text="DESCRIPTION" />
+            <Frame Padding="16,12" Style="{StaticResource CardFrame}">
+                <Editor
+                    AutoSize="Disabled"
+                    HeightRequest="90"
+                    Placeholder="Add details..."
+                    Style="{StaticResource InputEntry}"
+                    Text="{Binding Description}" />
+            </Frame>
+
+            <Label Style="{StaticResource SectionHeader}" Text="PRIORITY" />
+            <HorizontalStackLayout Spacing="12">
+                <Frame
+                    Padding="20,12"
+                    BackgroundColor="{StaticResource SurfaceColor}"
+                    BorderColor="{StaticResource PriorityLow}"
+                    CornerRadius="12"
+                    HasShadow="False">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetPriorityCommand}" CommandParameter="0" />
+                    </Frame.GestureRecognizers>
+                    <Label
+                        FontFamily="RobotoMedium"
+                        FontSize="14"
+                        Text="Low"
+                        TextColor="{StaticResource PriorityLow}" />
+                </Frame>
+                <Frame
+                    Padding="20,12"
+                    BackgroundColor="{StaticResource SurfaceColor}"
+                    BorderColor="{StaticResource PriorityMedium}"
+                    CornerRadius="12"
+                    HasShadow="False">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetPriorityCommand}" CommandParameter="1" />
+                    </Frame.GestureRecognizers>
+                    <Label
+                        FontFamily="RobotoMedium"
+                        FontSize="14"
+                        Text="Medium"
+                        TextColor="{StaticResource PriorityMedium}" />
+                </Frame>
+                <Frame
+                    Padding="20,12"
+                    BackgroundColor="{StaticResource SurfaceColor}"
+                    BorderColor="{StaticResource PriorityHigh}"
+                    CornerRadius="12"
+                    HasShadow="False">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetPriorityCommand}" CommandParameter="2" />
+                    </Frame.GestureRecognizers>
+                    <Label
+                        FontFamily="RobotoMedium"
+                        FontSize="14"
+                        Text="High"
+                        TextColor="{StaticResource PriorityHigh}" />
+                </Frame>
+            </HorizontalStackLayout>
+
+            <Label Style="{StaticResource SectionHeader}" Text="CATEGORY" />
+            <Frame Padding="16,12" Style="{StaticResource CardFrame}">
+                <Grid ColumnDefinitions="24,*" ColumnSpacing="12">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="18"
+                        Source="icon_tag.png"
+                        VerticalOptions="Center"
+                        WidthRequest="18" />
+                    <Entry
+                        Grid.Column="1"
+                        Placeholder="Category"
+                        Style="{StaticResource InputEntry}"
+                        Text="{Binding Category}" />
+                </Grid>
+            </Frame>
+
+            <Label Style="{StaticResource SectionHeader}" Text="DUE DATE" />
+            <Frame Padding="16,12" Style="{StaticResource CardFrame}">
+                <Grid ColumnDefinitions="24,*" ColumnSpacing="12">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="18"
+                        Source="icon_calendar.png"
+                        VerticalOptions="Center"
+                        WidthRequest="18" />
+                    <DatePicker
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        FontFamily="RobotoRegular"
+                        FontSize="15"
+                        Format="MMM dd, yyyy"
+                        TextColor="{StaticResource TextPrimary}" />
+                </Grid>
+            </Frame>
+
+            <Frame Padding="16,12" Style="{StaticResource CardFrame}">
+                <Grid ColumnDefinitions="24,*,Auto" ColumnSpacing="12">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="18"
+                        Source="icon_bell.png"
+                        VerticalOptions="Center"
+                        WidthRequest="18" />
+                    <Label
+                        Grid.Column="1"
+                        Style="{StaticResource BodyLabel}"
+                        Text="Enable reminder"
+                        VerticalOptions="Center" />
+                    <Switch
+                        Grid.Column="2"
+                        IsToggled="{Binding HasReminder}"
+                        OnColor="{StaticResource AccentColor}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <Label
+                FontFamily="RobotoRegular"
+                FontSize="13"
+                IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                Text="{Binding ErrorMessage}"
+                TextColor="{StaticResource DangerColor}" />
+
+            <Button
+                Margin="0,8,0,0"
+                Command="{Binding SaveCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                Style="{StaticResource PrimaryButton}"
+                Text="Update Task" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

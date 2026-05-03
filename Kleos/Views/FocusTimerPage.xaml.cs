@@ -1,9 +1,18 @@
-namespace Kleos.Views;
+using Kleos.ViewModels;
 
-public partial class FocusTimerPage : ContentPage
+namespace Kleos.Views
 {
-	public FocusTimerPage()
-	{
-		InitializeComponent();
-	}
+    public partial class FocusTimerPage : ContentPage
+    {
+        public FocusTimerPage(FocusTimerViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
+
+        private async void OnBackClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("..");
+        }
+    }
 }

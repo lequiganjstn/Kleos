@@ -1,9 +1,13 @@
-namespace Kleos.Views;
+using Kleos.ViewModels;
 
-public partial class RegisterPage : ContentPage
+namespace Kleos.Views
 {
-	public RegisterPage()
-	{
-		InitializeComponent();
-	}
+    public partial class RegisterPage : ContentPage
+    {
+        public RegisterPage(RegisterViewModel vm)
+        {
+            InitializeComponent();
+            BindingContext = vm;
+        }
+    }
 }

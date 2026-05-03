@@ -1,12 +1,136 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.RegisterPage"
-             Title="RegisterPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Kleos.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="32,60,32,32" Spacing="0">
+
+            <Label
+                Margin="0,0,0,8"
+                Style="{StaticResource HeadingLabel}"
+                Text="Create Account" />
+
+            <Label
+                Margin="0,0,0,40"
+                Style="{StaticResource SubheadingLabel}"
+                Text="Join Kleos and start building better habits." />
+
+            <!--  Full Name  -->
+            <Frame
+                Margin="0,0,0,12"
+                Padding="16,12"
+                Style="{StaticResource CardFrame}">
+                <Entry
+                    Placeholder="Full name"
+                    Style="{StaticResource InputEntry}"
+                    Text="{Binding FullName}" />
+            </Frame>
+
+            <!--  Email  -->
+            <Frame
+                Margin="0,0,0,12"
+                Padding="16,12"
+                Style="{StaticResource CardFrame}">
+                <Grid ColumnDefinitions="24,*" ColumnSpacing="12">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="20"
+                        Source="icon_mail.png"
+                        VerticalOptions="Center"
+                        WidthRequest="20" />
+                    <Entry
+                        Grid.Column="1"
+                        Keyboard="Email"
+                        Placeholder="Email address"
+                        Style="{StaticResource InputEntry}"
+                        Text="{Binding Email}" />
+                </Grid>
+            </Frame>
+
+            <!--  Password  -->
+            <Frame
+                Margin="0,0,0,12"
+                Padding="16,12"
+                Style="{StaticResource CardFrame}">
+                <Grid ColumnDefinitions="24,*,32" ColumnSpacing="12">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="20"
+                        Source="icon_lock.png"
+                        VerticalOptions="Center"
+                        WidthRequest="20" />
+                    <Entry
+                        Grid.Column="1"
+                        IsPassword="{Binding ShowPassword, Converter={StaticResource InverseBoolConverter}}"
+                        Placeholder="Password"
+                        Style="{StaticResource InputEntry}"
+                        Text="{Binding Password}" />
+                    <ImageButton
+                        Grid.Column="2"
+                        BackgroundColor="Transparent"
+                        Command="{Binding ToggleShowPasswordCommand}"
+                        HeightRequest="20"
+                        Source="icon_eye.png"
+                        VerticalOptions="Center"
+                        WidthRequest="20" />
+                </Grid>
+            </Frame>
+
+            <!--  Confirm Password  -->
+            <Frame
+                Margin="0,0,0,8"
+                Padding="16,12"
+                Style="{StaticResource CardFrame}">
+                <Entry
+                    IsPassword="True"
+                    Placeholder="Confirm password"
+                    Style="{StaticResource InputEntry}"
+                    Text="{Binding ConfirmPassword}" />
+            </Frame>
+
+            <!--  Error  -->
+            <Label
+                Margin="0,4,0,0"
+                FontFamily="RobotoRegular"
+                FontSize="13"
+                IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                Text="{Binding ErrorMessage}"
+                TextColor="{StaticResource DangerColor}" />
+
+            <Button
+                Margin="0,24,0,0"
+                Command="{Binding RegisterCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                Style="{StaticResource PrimaryButton}"
+                Text="Create Account" />
+
+            <ActivityIndicator
+                Margin="0,12,0,0"
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                Color="{StaticResource AccentColor}" />
+
+            <HorizontalStackLayout
+                Margin="0,28,0,0"
+                HorizontalOptions="Center"
+                Spacing="4">
+                <Label Style="{StaticResource SubheadingLabel}" Text="Already have an account?" />
+                <Label
+                    FontFamily="RobotoMedium"
+                    FontSize="14"
+                    Text="Sign In"
+                    TextColor="{StaticResource AccentColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToLoginCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

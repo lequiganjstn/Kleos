@@ -1,12 +1,151 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.FocusTimerPage"
-             Title="FocusTimerPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+<ContentPage
+    x:Class="Kleos.Views.FocusTimerPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout Padding="24,52,24,32" Spacing="24">
+
+        <!--  Header  -->
+        <Grid ColumnDefinitions="Auto,*">
+            <ImageButton
+                Grid.Column="0"
+                BackgroundColor="Transparent"
+                Clicked="OnBackClicked"
+                HeightRequest="24"
+                Source="icon_arrow_left.png"
+                WidthRequest="24" />
+            <Label
+                Grid.Column="1"
+                HorizontalOptions="Center"
+                Style="{StaticResource HeadingLabel}"
+                Text="Focus Timer" />
+        </Grid>
+
+        <!--  Duration Picker  -->
+        <Label Style="{StaticResource SectionHeader}" Text="SELECT DURATION" />
+        <CollectionView
+            HeightRequest="52"
+            ItemsSource="{Binding TimerOptions}"
+            SelectedItem="{Binding SelectedMinutes}"
+            SelectionMode="Single">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame
+                        Padding="16,10"
+                        BackgroundColor="{StaticResource SurfaceColor}"
+                        BorderColor="{StaticResource BorderColor}"
+                        CornerRadius="12"
+                        HasShadow="False">
+                        <Label
+                            FontFamily="RobotoMedium"
+                            FontSize="14"
+                            Text="{Binding ., StringFormat='{0} min'}"
+                            TextColor="{StaticResource TextPrimary}" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  Timer Display  -->
+        <VerticalStackLayout
+            Margin="0,24"
+            HorizontalOptions="Center"
+            Spacing="8">
+            <Frame
+                Padding="0"
+                BackgroundColor="{StaticResource SurfaceColor}"
+                BorderColor="{StaticResource BorderColor}"
+                CornerRadius="120"
+                HasShadow="False"
+                HeightRequest="240"
+                HorizontalOptions="Center"
+                WidthRequest="240">
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="4"
+                    VerticalOptions="Center">
+                    <Image
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsRunning}"
+                        Source="icon_lightning.png"
+                        WidthRequest="32" />
+                    <Label
+                        FontFamily="RobotoBold"
+                        FontSize="52"
+                        HorizontalOptions="Center"
+                        Text="{Binding DisplayTime}"
+                        TextColor="{StaticResource TextPrimary}" />
+                    <Label
+                        HorizontalOptions="Center"
+                        Style="{StaticResource CaptionLabel}"
+                        Text="{Binding SessionsToday, StringFormat='Sessions today: {0}'}" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+
+        <!--  Controls  -->
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="16">
+
+            <!--  Reset  -->
+            <ImageButton
+                Padding="16"
+                BackgroundColor="{StaticResource SurfaceColor}"
+                Command="{Binding ResetCommandCommand}"
+                CornerRadius="28"
+                HeightRequest="24"
+                Source="icon_refresh.png"
+                WidthRequest="24" />
+
+            <!--  Start / Pause / Resume  -->
+            <Button
+                Command="{Binding StartCommand}"
+                IsVisible="{Binding IsRunning, Converter={StaticResource InverseBoolConverter}}"
+                Style="{StaticResource PrimaryButton}"
+                Text="Start"
+                WidthRequest="140" />
+
+            <Button
+                Command="{Binding PauseCommand}"
+                IsVisible="{Binding IsRunning}"
+                Style="{StaticResource PrimaryButton}"
+                Text="Pause"
+                WidthRequest="140" />
+
+            <!--  Stop  -->
+            <ImageButton
+                Padding="16"
+                BackgroundColor="{StaticResource DangerColor}"
+                Command="{Binding StopCommand}"
+                CornerRadius="28"
+                HeightRequest="24"
+                IsVisible="{Binding IsRunning}"
+                Source="icon_stop.png"
+                WidthRequest="24" />
+
+        </HorizontalStackLayout>
+
+        <!--  Finished Banner  -->
+        <Frame
+            Padding="20"
+            BackgroundColor="{StaticResource SuccessColor}"
+            BorderColor="Transparent"
+            CornerRadius="16"
+            IsVisible="{Binding IsFinished}">
+            <Label
+                FontFamily="RobotoMedium"
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="Session complete. Well done."
+                TextColor="White" />
+        </Frame>
+
     </VerticalStackLayout>
+
 </ContentPage>

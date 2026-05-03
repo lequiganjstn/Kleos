@@ -1,12 +1,172 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kleos.Views.StreaksPage"
-             Title="StreaksPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="Kleos.Views.StreaksPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource PrimaryColor}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,52,24,32" Spacing="20">
+
+            <!--  Header  -->
+            <Label Style="{StaticResource HeadingLabel}" Text="Streaks" />
+            <Label
+                Margin="0,-12,0,0"
+                Style="{StaticResource SubheadingLabel}"
+                Text="{Binding MotivationalMessage}" />
+
+            <!--  Current Streak Card  -->
+            <Frame
+                Padding="24"
+                BackgroundColor="{StaticResource AccentColor}"
+                BorderColor="Transparent"
+                Style="{StaticResource CardFrame}">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                    <Image
+                        HeightRequest="48"
+                        HorizontalOptions="Center"
+                        Source="icon_flame.png"
+                        WidthRequest="48" />
+                    <Label
+                        FontFamily="RobotoBold"
+                        FontSize="56"
+                        HorizontalOptions="Center"
+                        Text="{Binding CurrentStreak}"
+                        TextColor="White" />
+                    <Label
+                        FontFamily="RobotoMedium"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Opacity="0.85"
+                        Text="Day Streak"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Stats Row  -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Frame
+                    Grid.Column="0"
+                    Padding="20"
+                    Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label
+                            FontFamily="RobotoBold"
+                            FontSize="32"
+                            HorizontalOptions="Center"
+                            Text="{Binding LongestStreak}"
+                            TextColor="{StaticResource WarningColor}" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Style="{StaticResource CaptionLabel}"
+                            Text="Best Streak" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame
+                    Grid.Column="1"
+                    Padding="20"
+                    Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label
+                            FontFamily="RobotoBold"
+                            FontSize="32"
+                            HorizontalOptions="Center"
+                            Text="{Binding TotalCompleted}"
+                            TextColor="{StaticResource SuccessColor}" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Style="{StaticResource CaptionLabel}"
+                            Text="Total Done" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!--  Badges  -->
+            <Label
+                Margin="0,8,0,0"
+                Style="{StaticResource SectionHeader}"
+                Text="BADGES" />
+            <HorizontalStackLayout Spacing="16">
+
+                <!--  Bronze  -->
+                <Frame
+                    Padding="20"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Image
+                            HeightRequest="32"
+                            HorizontalOptions="Center"
+                            Opacity="{Binding HasBronzeBadge, Converter={StaticResource BoolToOpacityConverter}}"
+                            Source="icon_trophy.png"
+                            WidthRequest="32" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Style="{StaticResource CaptionLabel}"
+                            Text="10 Tasks" />
+                        <Label
+                            FontFamily="RobotoMedium"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="Bronze"
+                            TextColor="#CD7F32" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Silver  -->
+                <Frame
+                    Padding="20"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Image
+                            HeightRequest="32"
+                            HorizontalOptions="Center"
+                            Opacity="{Binding HasSilverBadge, Converter={StaticResource BoolToOpacityConverter}}"
+                            Source="icon_trophy.png"
+                            WidthRequest="32" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Style="{StaticResource CaptionLabel}"
+                            Text="50 Tasks" />
+                        <Label
+                            FontFamily="RobotoMedium"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="Silver"
+                            TextColor="#C0C0C0" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Gold  -->
+                <Frame
+                    Padding="20"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Image
+                            HeightRequest="32"
+                            HorizontalOptions="Center"
+                            Opacity="{Binding HasGoldBadge, Converter={StaticResource BoolToOpacityConverter}}"
+                            Source="icon_star.png"
+                            WidthRequest="32" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Style="{StaticResource CaptionLabel}"
+                            Text="100 Tasks" />
+                        <Label
+                            FontFamily="RobotoMedium"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="Gold"
+                            TextColor="{StaticResource WarningColor}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

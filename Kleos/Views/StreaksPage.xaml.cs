@@ -1,9 +1,22 @@
-namespace Kleos.Views;
+using Kleos.ViewModels;
 
-public partial class StreaksPage : ContentPage
+namespace Kleos.Views
 {
-	public StreaksPage()
-	{
-		InitializeComponent();
-	}
+    public partial class StreaksPage : ContentPage
+    {
+        private readonly StreaksViewModel _vm;
+
+        public StreaksPage(StreaksViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
+            BindingContext = vm;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _vm.LoadStreakCommand.Execute(null);
+        }
+    }
 }
